@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:14
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: cloud_storage
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: always
+
+  server:
+    build: ./server
+    ports:
+      - '3000:3000'
+    environment:
+      # Важливо: хост бази даних тут 'postgres' (ім'я сервісу), а не localhost
+      DATABASE_URL: postgres://user:password@postgres:5432/cloud_storage?schema=public
+      JWT_SECRET: "SecretKey123"
+    depends_on:
+      - postgres
+    volumes:
+      - ./server/uploads:/app/uploads
+    restart: always # <--- Якщо впаде через базу, спробує знову
+
+  client:
+    build: ./client
+    ports:
+      - '5173:5173'
+    depends_on:
+      - server
+    restart: always
+
+volumes:
+  pgdata:

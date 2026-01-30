@@ -30,6 +30,7 @@ Full Stack застосунок для зберігання файлів (ана
 git clone [https://github.com/Bogdan1v1/cloude_storage.git](https://github.com/Bogdan1v1/cloude_storage.git)
 cd cloude_storage
 ### 2. Запуск через Docker
+Потрібно мати завантаженим Docker Desktop та запустити програму, перед запуском проекту.
 Виконайте команду в корені проєкту:
 
 docker-compose up --build
